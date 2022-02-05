@@ -1,0 +1,140 @@
+import java.io.IOException;
+import java.net.URL;
+import java.net.URISyntaxException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.regex.Pattern;
+
+/*
+Note: 
+    - The URL that display in the source pages sometime depend on the kind of web-browser
+        - We can see that the URL that this application hop in will different each time 
+        when change the web-browser
+*/
+public class SimpleCrawl {
+    public static Set<URL> visitedURL = new HashSet<URL>();
+    public static void main(String[] args) throws IOException, URISyntaxException {
+
+        /*
+        // Must have two arguments
+        if (args.length != 2) {
+            System.out.println("Error: must give exactly two arguments");
+            return; // End program if now qualify 2 arguments
+        }
+
+
+        // Parse in the arguments
+        String currentURL = args[0];
+        String nextURL = currentURL;
+        int nHops = Integer.parseInt(args[1]);
+        */
+        
+        // For test only
+        int nHops = 3;
+        int printHop = nHops;
+
+        // Early exit
+        // Bad number of hops
+        if (nHops < 0) {
+            System.out.println("Bad input: number of hop must be positive");
+            return;
+        }
+
+        // Main hoping
+        try {
+
+            // Initial URL
+            URL currentURL = new URL("https://www.w3schools.com/tags/att_a_href.asp");
+            URL nextURL;
+
+            // Do hoping until reach the number of hope
+            while (nHops >= 0) {
+
+                // Create URL, and check if valid page or not
+                URL URL = currentURL;
+                HttpURLConnection connection = (HttpURLConnection)URL.openConnection();
+                int statusCode = connection.getResponseCode();
+                if (statusCode >= 300) {
+                    throw new IOException();
+                }
+
+                // Print to the console current URL
+                System.out.println("URL visit: " + currentURL);
+
+                // Add the current URL in to list of URL
+                visitedURL.add(currentURL);
+
+                // Get net page, after this statement, currentURL have new value
+                nextURL = getNextURL(currentURL);
+
+                
+                // Terminate if current and prevous are identical, no more access
+                // visitedURL.size() - 1 because exculde the given URL
+                if (currentURL.equals(nextURL)) {
+                    System.out.println("Warning: No more available pages to access after this page.\n"
+                                        + "Terminate by " + (visitedURL.size() - 1) + " hop");
+                    return;
+                }
+                currentURL = nextURL;
+                nHops--;
+            }
+            if (printHop == 0)
+                System.out.println("Total: " + printHop + " hop");
+            else
+                System.out.println("Total: " + (visitedURL.size() - 2)  + " hop");
+        } catch (IOException e) {
+            System.out.println("Error: cannot access website");
+        } catch (URISyntaxException e) {
+            System.out.println("Error: invalid page format");
+        }
+    }
+
+    public static URL getNextURL(URL curURL) throws URISyntaxException {
+        
+        // Conditions:
+        // If: Skip the unaccessible page for the next available page
+        // If: If encounter a page not acessible then stop
+        try {
+            
+            // Download the current URL page
+            // Assign source page into buffer
+            HttpURLConnection connection = (HttpURLConnection)curURL.openConnection();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+            // Read every line of source page for looking https and http pattern
+            String line;
+            while ((line = reader.readLine()) != null) {
+
+                // Define the pattern
+                Pattern p = Pattern.compile("href=\"(http[s]?://(.*?))\"", Pattern.DOTALL);
+                var m = p.matcher(line);
+
+                // Find the https/http pattern
+                while (m.find()) {
+
+                    // Get only https/http string
+                    String tempURL = m.group(1);
+
+                    // Create a URL after tokenize the string
+                    URL newURL = new URL(tempURL);
+
+                    // Check if the URL not visit
+                    if (!visitedURL.contains(newURL)) {
+                        visitedURL.add(newURL);
+                        return newURL;
+                    }
+                    // Keep running if visit
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error: Cannot access website");
+        }
+
+        // No more website to access
+        // Return the current web
+        return curURL;
+    }
+}

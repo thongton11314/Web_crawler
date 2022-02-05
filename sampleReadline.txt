@@ -1,0 +1,15 @@
+/*
+
+        String stringURL = args[0];
+        URL url = new URL(stringURL);
+        HttpURLConnection connection =(HttpURLConnection)url.openConnection();
+
+        int statusCode= connection.getResponseCode();
+        System.out.println(statusCode);
+        BufferedReader reader= new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String line;
+        while ((line=reader.readLine())!=null){
+            System.out.println(line);
+        }
+
+*/

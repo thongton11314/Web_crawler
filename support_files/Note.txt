@@ -1,0 +1,61 @@
+Professor code:
+        String stringURL = args[0];
+        URL url = new URL(stringURL);
+        HttpURLConnection connection =(HttpURLConnection)url.openConnection();
+
+        int statusCode= connection.getResponseCode();
+        System.out.println(statusCode);
+        BufferedReader reader= new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String line;
+        while ((line=reader.readLine())!=null){
+            System.out.println(line);
+
+
+Preliminary:
+    - The URL that display in the source pages sometimes depend on web-browser types
+        - We can see that the URL that this application hop in will different each time 
+        when change the web-browser
+
+Pseudocode:
+    Step 1: get two arguments from user:
+            check if valid initial URL and valid number of hopping (could use exception)
+    
+    Step 2: first URL
+            URL firstURL = new URL(args[0]);    // first arguments always URL  
+            int numberHoping = args[1];         // second argument always number of hop
+
+            // use prof code to check connection
+            // make sure to have excption to handle connection
+            // this part of code use to check next URL later as well
+            HttpURLConnection connection =(HttpURLConnection)url.openConnection();
+            int statusCode= connection.getResponseCode();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+
+            // If pass the valid URL, add to the set of URL (use set for better check duplicate URL later)
+            set.add(url)
+
+    Step 3: all the next URL
+            while(nhop > 0) {
+
+                getNextURl by using BufferedReader. Read source file like prof did;
+                // make sure to pass all conditions
+                // not redundant URL, could use set.contains(URL) to check, then jump to the next available
+                // not error URL
+
+                if nextURL == currentURL
+                    terminate the code, no more website to access;
+                    break the loop;
+
+                if pass
+                    add newURL to set;
+
+                currentURL = nextURL;
+                nhop--;
+            }
+
+    Step 4: how to get the "href tag"
+        this regex expression could. There are many way to use reg, so google it: 
+        sample link: https://stackoverflow.com/questions/6038061/regular-expression-to-find-urls-within-a-string
+
+            

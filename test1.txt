@@ -1,0 +1,64 @@
+webhop:
+	@echo "Test 1" 
+	java simplecrawl.java https://www.facebook.com 0
+	@echo
+
+	@echo "Test 2:"
+	java simplecrawl.java https://www.facebook.com 2
+	@echo
+
+	@echo "Test 3:"
+	java simplecrawl.java https://facebook.com 4
+	@echo
+
+	@echo "Test 4:"
+	java simplecrawl.java http://courses.washington.edu/css502/dimpsey 0
+	@echo
+
+	@echo "Test 5:"
+	java simplecrawl.java http://courses.washington.edu/css502/dimpsey 2
+	@echo
+
+	@echo "Test 6:"
+	java simplecrawl.java http://courses.washington.edu/css502/dimpsey 5
+	@echo
+
+	@echo "Test 6-1:"
+	java simplecrawl.java http://courses.washington.edu/css502/dimpsey 10
+	@echo
+
+	@echo "Test 7:"
+	java simplecrawl.java https://www.w3schools.com/tags/att_a_href.asp 0
+	@echo
+
+	@echo "Test 8:"
+	java simplecrawl.java https://www.w3schools.com/tags/att_a_href.asp 2
+	@echo
+
+	@echo "Test 9:"
+	java simplecrawl.java https://www.w3schools.com/tags/att_a_href.asp 5
+	@echo
+
+	@echo "Test 10:"
+	java simplecrawl.java https://amazon.com/ 1
+	@echo
+	
+	@echo "Test 11:"
+	java simplecrawl.java https://github.com/ 1
+	@echo
+
+	@echo "Test 12:"
+	java simplecrawl.java https://github.com/ 2
+	@echo
+
+	@echo "Test 13:"
+	java simplecrawl.java https://google.com/ 10
+	@echo
+
+	@echo "Test 14:"
+	java simplecrawl.java https://www.upwork.com/ 10
+	@echo
+
+	@echo "Test 15:"
+	java simplecrawl.java https://apple.com 250
+	@echo
